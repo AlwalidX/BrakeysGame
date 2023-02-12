@@ -462,8 +462,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3be0ad2d2d1ed614681e1fe460a77c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentSpeed: 10
   speed: 10
+  speedUp: 15
   jumpForce: 7.5
+  isGrounded: 0
+  rigidBody2D: {fileID: 0}
+  horizontalInput: 0
+  verticalInput: 0
+  canMove: 1
+  canJump: 1
+  canSpeed: 1
+  spriteRenderer: {fileID: 0}
 --- !u!50 &1504964758
 Rigidbody2D:
   serializedVersion: 4
