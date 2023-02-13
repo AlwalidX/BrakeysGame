@@ -10,6 +10,7 @@ public class CharacterController2D : MonoBehaviour
     public float jumpForce = 10.0f;
     public bool isGrounded = false;
     public Rigidbody2D rigidBody2D;
+    public GameObject checkPoint;
     public float horizontalInput;
     public float verticalInput;
     public bool canMove = true;
@@ -34,10 +35,16 @@ public class CharacterController2D : MonoBehaviour
         {
             speed =  currentSpeed;
         }
+        
         if(canMove)
         {
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
+        }
+
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            Instantiate(checkPoint, transform.position, transform.rotation);
         }
         if(canJump)
         {
