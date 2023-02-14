@@ -17,6 +17,7 @@ public class CharacterController2D : MonoBehaviour
     public bool canJump = true;
     public bool canSpeed = true;
     public SpriteRenderer spriteRenderer;
+    public float flyingForce = 5f;
 
     void Start()
     {
@@ -42,10 +43,11 @@ public class CharacterController2D : MonoBehaviour
         verticalInput = Input.GetAxis("Vertical");
         }
 
-        if(Input.GetKeyDown(KeyCode.U))
+         if (Input.GetKeyDown(KeyCode.W))
         {
-            Instantiate(checkPoint, transform.position, transform.rotation);
+            rigidBody2D.velocity = Vector2.up * jumpForce;
         }
+
         if(canJump)
         {
                if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
