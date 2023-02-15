@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Ground
   - GM
+  - Obstacle
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 
