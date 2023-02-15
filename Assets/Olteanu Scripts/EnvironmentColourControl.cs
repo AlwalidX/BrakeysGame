@@ -13,9 +13,5 @@ public class EnvironmentColourControl : MonoBehaviour
         instance = this;
     }
 
-    private void Start()
-    {
-        theSprite = GetComponentInChildren<SpriteRenderer>();
-       // FindObjectOfType<LevelManagerByOlteanu>()
-    }
+    private void Start() => theSprite = GetComponentInChildren<SpriteRenderer>();
 }
