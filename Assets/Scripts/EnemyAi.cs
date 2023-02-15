@@ -13,6 +13,7 @@ public class EnemyAi : MonoBehaviour
     public LayerMask groundLayer;
     private Rigidbody2D rb;
     private float jumpTimer = 0f;
+    public  bool ifClose = false;
 
     void Start()
     {
@@ -21,6 +22,8 @@ public class EnemyAi : MonoBehaviour
 
     void Update()
     {
+        if (ifClose)
+        {
         float distToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
         if (distToPlayer < 10f)
@@ -51,16 +54,22 @@ public class EnemyAi : MonoBehaviour
                 jumpTimer -= Time.deltaTime;
             }
         }
+        }
     }
 
    void OnCollisionEnter2D(Collision2D other)
     {
+        if (ifClose)
+        {
+
+        
 
          if(other.gameObject.CompareTag("Player"))
       {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
       }
-    } 
+       } 
+    }
 
 }
 
