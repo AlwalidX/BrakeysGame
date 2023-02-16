@@ -545,7 +545,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 1504964761}
   moveSpeed: 2.94
-  jumpForce: 1000
+  jumpForce: 100
   jumpDelay: 10
   groundLayer:
     serializedVersion: 2
@@ -1092,7 +1092,7 @@ GameObject:
   - component: {fileID: 1710724468}
   - component: {fileID: 1710724473}
   - component: {fileID: 1710724474}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: spike
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
