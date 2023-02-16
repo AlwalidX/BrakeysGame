@@ -6,17 +6,20 @@ public class LevelManagerByOlteanu : MonoBehaviour
 {
     public bool isLevel1;
     public bool isLevel2;
-    public GameObject fadeScreen, maskScreen, thePlayer;
+    public GameObject fadeScreen, maskScreen, deadPlayer;
     public List<PlayerControllByOlteanu> playerControls = new List<PlayerControllByOlteanu>();
-    //public GameObject[] players;
+    public GameObject[] players;
     public Transform spawnPoint, newSpawnPoint;
     public float gameStartsTime;
     public float gameStartsCounter;
     public Animator animSeringe;
     public bool isGrounded;
+    public bool spawnPlayer;
+    public int thePlayerNumber;
 
     private void Start()
     {
+        ResetPlayer();
         animSeringe = FindObjectOfType<SeringeSpawner>().GetComponent<Animator>();
         spawnPoint = FindObjectOfType<SeringeSpawner>().seringeSpawnPoint;
         maskScreen.SetActive(true);
@@ -53,17 +56,17 @@ public class LevelManagerByOlteanu : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            var exixtingPlayer = FindObjectOfType<PlayerControllByOlteanu>();
-            if (exixtingPlayer == null)
+            var existingPlayer = FindObjectOfType<PlayerControllByOlteanu>();
+            if (existingPlayer == null)
             {
                 //Destroy(exixtingPlayer.gameObject);
-                Instantiate(thePlayer, spawnPoint.position, spawnPoint.rotation);
+                Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
                 FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
             }
-            else if(exixtingPlayer!= null)
+            else if(existingPlayer != null)
             {
-                Destroy(exixtingPlayer.gameObject);
-                Instantiate(thePlayer, spawnPoint.position, spawnPoint.rotation);
+                Destroy(existingPlayer.gameObject);
+                Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
                 FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
             }
 
@@ -89,6 +92,8 @@ public class LevelManagerByOlteanu : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         animSeringe.SetBool("isIn", true);
+        yield return new WaitForSeconds(2);
+        AddPlayer();
     }
 
     IEnumerator SetSeringeNewSapwnPointCo()
@@ -99,5 +104,37 @@ public class LevelManagerByOlteanu : MonoBehaviour
         yield return new WaitForSeconds (1f);
         animSeringe.SetBool("isIn", true);
 
+    }
+
+    public void KillPlayer()
+    {
+        if (spawnPlayer)
+        {
+            var existingPlayer = FindObjectOfType<PlayerControllByOlteanu>();
+            if (existingPlayer == null)
+            {
+                Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
+                FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
+            }
+            else if (existingPlayer != null)
+            {
+                Instantiate(deadPlayer, existingPlayer.transform.position, existingPlayer.transform.rotation);
+                Destroy(existingPlayer.gameObject);
+                Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
+                FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
+            }
+            spawnPlayer = false;
+        }
+    }
+
+    public void ResetPlayer()
+    {
+        thePlayerNumber = Random.Range(0, players.Length);
+    }
+   
+    public void AddPlayer()
+    {
+        Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
+        FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
     }
 }
