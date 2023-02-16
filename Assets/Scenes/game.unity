@@ -841,7 +841,6 @@ MonoBehaviour:
   speed: 10
   speedUp: 15
   jumpForce: 7.5
-  isGrounded: 0
   rigidBody2D: {fileID: 1504964758}
   checkPoint: {fileID: 168147628}
   horizontalInput: 0
@@ -851,6 +850,11 @@ MonoBehaviour:
   canSpeed: 1
   spriteRenderer: {fileID: 1504964760}
   flyingForce: 5
+  ground:
+    serializedVersion: 2
+    m_Bits: 8
+  boxSize: {x: 1.07, y: 0.24, z: 0}
+  maxDistance: 1.27
 --- !u!50 &1504964758
 Rigidbody2D:
   serializedVersion: 4
