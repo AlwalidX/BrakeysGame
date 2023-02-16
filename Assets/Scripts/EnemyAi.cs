@@ -77,15 +77,12 @@ public class EnemyAi : MonoBehaviour
                 transform.localScale = new Vector3(transform.localScale.x * -1, 1, 1);
                 objectivePos = new Vector3(startPos.x - patrolDistance, transform.position.y, transform.position.z);
                 walkingLeft = !walkingLeft;
-                Debug.Log("Walking right");
             }
             else if(walkingLeft && transform.position.x <= startPos.x - patrolDistance)
             {
                 transform.localScale = new Vector3(transform.localScale.x * -1, 1, 1);
                 objectivePos = new Vector3(startPos.x + patrolDistance, transform.position.y, transform.position.z);
                 walkingLeft = !walkingLeft;
-                Debug.Log("Walking left");
-
             }
             transform.position = Vector2.MoveTowards(transform.position, objectivePos, moveSpeed * Time.deltaTime);
 
