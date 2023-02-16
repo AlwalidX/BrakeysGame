@@ -38,8 +38,8 @@ public class Patrol : MonoBehaviour
     
         float distToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
-        if (distToPlayer < 4f)
-        {enemyAi.ifClose = true;}
+        //if (distToPlayer < 4f)
+        //{enemyAi.ifClose = true;}
     
     }
 }
