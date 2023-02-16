@@ -48,6 +48,10 @@ public class PlayerControllByOlteanu : MonoBehaviour
             verticalInput = Input.GetAxis("Vertical");
            
         }
+        else
+        {
+            rigidBody2D.velocity = Vector3.zero;
+        }
 
         if (canJump)
         {
@@ -91,6 +95,10 @@ public class PlayerControllByOlteanu : MonoBehaviour
             {
                 transform.localScale = new Vector2(1, 1);
             }
+        }
+        else
+        {
+            rigidBody2D.velocity = Vector3.zero;
         }
     }
 
