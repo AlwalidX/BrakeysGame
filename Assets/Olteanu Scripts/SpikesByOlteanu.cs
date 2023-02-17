@@ -17,8 +17,9 @@ public class SpikesByOlteanu : MonoBehaviour
                 FindObjectOfType<CameraController>().virtualCamera.m_Follow = FindObjectOfType<CameraController>().spawnPoint;
                 FindObjectOfType<LevelManagerByOlteanu>().spawnPlayer = true;
                 FindObjectOfType<LevelManagerByOlteanu>().ResetPlayer();
-                FindObjectOfType<LevelManagerByOlteanu>().KillPlayer();
                 FindObjectOfType<LevelManagerByOlteanu>().AddDeadPlayer();
+                FindObjectOfType<LevelManagerByOlteanu>().KillPlayer();
+                FindObjectOfType<LevelManagerByOlteanu>().AddDeadPlayerColour();
                 isOn = false;
                 StartCoroutine(ResetSpikesCo());
             }
@@ -28,7 +29,7 @@ public class SpikesByOlteanu : MonoBehaviour
 
    IEnumerator ResetSpikesCo()
    {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.2f);
         isOn = true;
    }
 }
