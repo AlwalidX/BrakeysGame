@@ -16,6 +16,8 @@ public class LevelManagerByOlteanu : MonoBehaviour
     public bool isGrounded;
     public bool spawnPlayer;
     public int thePlayerNumber;
+    public SpriteRenderer theSpriteColor;
+    private GameObject theDeadPlayer;
 
     private void Start()
     {
@@ -118,7 +120,8 @@ public class LevelManagerByOlteanu : MonoBehaviour
             }
             else if (existingPlayer != null)
             {
-                Instantiate(deadPlayer, existingPlayer.transform.position, existingPlayer.transform.rotation);
+                theDeadPlayer = Instantiate(deadPlayer, existingPlayer.transform.position, existingPlayer.transform.rotation);
+
                 Destroy(existingPlayer.gameObject);
                 Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
                 FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
@@ -136,5 +139,10 @@ public class LevelManagerByOlteanu : MonoBehaviour
     {
         Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
         FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
+    }
+
+    public void AddDeadPlayer()
+    {
+        theDeadPlayer.GetComponentInChildren<SpriteRenderer>().color = theSpriteColor.color;
     }
 }
