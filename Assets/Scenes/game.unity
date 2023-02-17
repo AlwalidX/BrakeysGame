@@ -550,7 +550,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  ifClose: 0
+  chase: 0
+  patrolDistance: 2
 --- !u!212 &1272992568
 SpriteRenderer:
   m_ObjectHideFlags: 0
