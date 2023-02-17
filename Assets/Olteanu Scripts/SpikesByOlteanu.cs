@@ -28,7 +28,7 @@ public class SpikesByOlteanu : MonoBehaviour
 
    IEnumerator ResetSpikesCo()
    {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
         isOn = true;
    }
 }
