@@ -25,6 +25,7 @@ public class PlayerControllByOlteanu : MonoBehaviour
 
     void Start()
     {
+        
         rigidBody2D = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         anim = GetComponent<Animator>();
