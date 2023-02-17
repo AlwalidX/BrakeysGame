@@ -13,7 +13,8 @@ public class MakeDeadPlayerKinematic : MonoBehaviour
 
     IEnumerator KillMoveCo()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(.3f);
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         gameObject.tag = "Ground";
     }

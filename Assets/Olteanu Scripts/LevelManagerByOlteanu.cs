@@ -120,8 +120,6 @@ public class LevelManagerByOlteanu : MonoBehaviour
             }
             else if (existingPlayer != null)
             {
-                theDeadPlayer = Instantiate(deadPlayer, existingPlayer.transform.position, existingPlayer.transform.rotation);
-
                 Destroy(existingPlayer.gameObject);
                 Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
                 FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
@@ -137,12 +135,23 @@ public class LevelManagerByOlteanu : MonoBehaviour
    
     public void AddPlayer()
     {
+        
         Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
         FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
     }
 
+
     public void AddDeadPlayer()
     {
-        theDeadPlayer.GetComponentInChildren<SpriteRenderer>().color = theSpriteColor.color;
+        var existingPlayer = FindObjectOfType<PlayerControllByOlteanu>();
+        float minValue = Random.Range(.6f, 1f);
+        float maxValue = minValue + Random.Range(0, .2f);
+        theDeadPlayer = Instantiate(deadPlayer, existingPlayer.transform.position, existingPlayer.transform.rotation);
+        theDeadPlayer.gameObject.transform.localScale = new Vector2(minValue, maxValue);
+    }
+
+    public void AddDeadPlayerColour()
+    {
+        theDeadPlayer.GetComponentInChildren<SpriteRenderer>().color = theSpriteColor.color;        
     }
 }

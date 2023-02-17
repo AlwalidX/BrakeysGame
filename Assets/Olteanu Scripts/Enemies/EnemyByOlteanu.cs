@@ -14,12 +14,14 @@ public class EnemyByOlteanu : MonoBehaviour
     private float waitCounter;
     public Rigidbody2D rb;
     public bool isOn;
+    public GameObject theDeathEffect;
 
 
     private void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        waitAtPoint = Random.Range(.2f, 1);
         waitCounter = waitAtPoint;
         foreach (Transform pPoint in patroPoints)
         {
@@ -55,6 +57,7 @@ public class EnemyByOlteanu : MonoBehaviour
             waitCounter -= Time.deltaTime;
             if (waitCounter <= 0)
             {
+                waitAtPoint = Random.Range(.2f, 1);
                 waitCounter = waitAtPoint;
                 currentPoint++;
                 if (currentPoint >= patroPoints.Length)
@@ -76,22 +79,24 @@ public class EnemyByOlteanu : MonoBehaviour
         {
             isGrounded = true;
         }
-        /*
+        
         if (collision.collider.CompareTag("Player"))
         {
+           
             if (isOn)
             {
-                FindObjectOfType<CameraController>().thePlayer = null;
-                FindObjectOfType<CameraController>().virtualCamera.m_Follow = FindObjectOfType<CameraController>().spawnPoint;
-                FindObjectOfType<LevelManagerByOlteanu>().spawnPlayer = true;
-                FindObjectOfType<LevelManagerByOlteanu>().ResetPlayer();
-                FindObjectOfType<LevelManagerByOlteanu>().KillPlayer();
-                FindObjectOfType<LevelManagerByOlteanu>().AddDeadPlayer();
+                Instantiate(theDeathEffect, collision.transform.position, collision.transform.rotation);
+                collision.gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
+                Destroy(collision.gameObject, 2.2f);
+                collision.gameObject.GetComponent<PlayerControllByOlteanu>().canMove = false;
+                //FindObjectOfType<LevelManagerByOlteanu>().AddDeadPlayerColour();
                 isOn = false;
                 StartCoroutine(ResetEnemyCo());
             }
+            GetComponentInChildren<SpriteRenderer>().enabled = false;
+            Destroy(gameObject, 5f);
         }
-        */
+        
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -102,11 +107,18 @@ public class EnemyByOlteanu : MonoBehaviour
         }
     }
 
-    /*
+    
     IEnumerator ResetEnemyCo()
     {
-        yield return new WaitForSeconds(.5f);
+        
+        yield return new WaitForSeconds(1f);
+        FindObjectOfType<CameraController>().thePlayer = null;
+        FindObjectOfType<CameraController>().virtualCamera.m_Follow = FindObjectOfType<CameraController>().spawnPoint;
+        FindObjectOfType<LevelManagerByOlteanu>().spawnPlayer = true;
+        FindObjectOfType<LevelManagerByOlteanu>().ResetPlayer();
+        FindObjectOfType<LevelManagerByOlteanu>().KillPlayer();
+        yield return new WaitForSeconds(.2f);
         isOn = true;
     }
-    */
+   
 }
