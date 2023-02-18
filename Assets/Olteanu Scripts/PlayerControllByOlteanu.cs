@@ -47,36 +47,7 @@ public class PlayerControllByOlteanu : MonoBehaviour
         {
             horizontalInput = Input.GetAxis("Horizontal");
             verticalInput = Input.GetAxis("Vertical");
-           
-        }
-        else
-        {
-            rigidBody2D.velocity = Vector3.zero;
-        }
 
-        if (canJump)
-        {
-           
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
-            {
-                if (isGrounded)
-                {
-                    rigidBody2D.velocity = Vector2.up * jumpForce;
-                    canDouble = true;
-                }
-                else if (canDoubleJump && canDouble)
-                {
-                    rigidBody2D.velocity = Vector2.up * jumpForce;
-                    canDouble = false;
-                }
-            }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (canMove)
-        {
             Vector2 velocity = new Vector2(horizontalInput * speed, rigidBody2D.velocity.y);
             rigidBody2D.velocity = velocity;
             if (rigidBody2D.velocity.x != 0)
@@ -96,12 +67,35 @@ public class PlayerControllByOlteanu : MonoBehaviour
             {
                 transform.localScale = new Vector2(1, 1);
             }
+
         }
         else
         {
             rigidBody2D.velocity = Vector3.zero;
         }
+
+        if (canJump)
+        {
+           
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                if (isGrounded)
+                {
+                    rigidBody2D.velocity = Vector2.up * jumpForce;
+                    AudioManager.instance.PlaySfx(0);
+                    canDouble = true;
+                }
+                else if (canDoubleJump && canDouble)
+                {
+                    rigidBody2D.velocity = Vector2.up * jumpForce;
+                    AudioManager.instance.PlaySfx(0);
+                    canDouble = false;
+                }
+            }
+        }
     }
+
+    
 
 
     public void OnCollisionEnter2D(Collision2D collision)

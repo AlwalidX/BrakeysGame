@@ -5,9 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu: MonoBehaviour
 {
+
+    public GameObject credits;
+    private void Start()
+    {
+        AudioManager.instance.PlayBgm(1);
+    }
  public void PlayGame ()
  {
    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        
  }
 
  public void QuitGame ()
@@ -15,5 +22,15 @@ public class MainMenu: MonoBehaviour
    Debug. Log ("GAME Quit");
   Application.Quit();
  }
+
+    public void BackToMainMenu()
+    {
+        credits.SetActive(false);
+    }
+
+    public void Credits()
+    {
+        credits.SetActive(true);
+    }
 
 }

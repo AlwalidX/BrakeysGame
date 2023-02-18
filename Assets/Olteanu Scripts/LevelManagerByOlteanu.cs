@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelManagerByOlteanu : MonoBehaviour
 {
@@ -15,15 +17,20 @@ public class LevelManagerByOlteanu : MonoBehaviour
     public float gameStartsCounter;
     public Animator animSeringe;
     public bool isGrounded;
-    public bool spawnPlayer;
+    public bool spawnPlayer, gameIsOver, youWin, nearSpawnPoint;
     public int thePlayerNumber;
     public SpriteRenderer theSpriteColor;
     private GameObject theDeadPlayer;
     public int deathLimit = 20;
     public TextMeshProUGUI limitText;
+    public GameObject gameOver, youWinPanel;
+
+
 
     private void Start()
     {
+        Time.timeScale = 1f;
+        AudioManager.instance.PlayBgm(0);
         ResetPlayer();
         animSeringe = FindObjectOfType<SeringeSpawner>().GetComponent<Animator>();
         spawnPoint = FindObjectOfType<SeringeSpawner>().seringeSpawnPoint;
@@ -65,38 +72,58 @@ public class LevelManagerByOlteanu : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            var existingPlayer = FindObjectOfType<PlayerControllByOlteanu>();
-            if (existingPlayer == null)
-            {
-                //Destroy(exixtingPlayer.gameObject);
-                Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
-                FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
-            }
-            else if(existingPlayer != null)
-            {
-                Destroy(existingPlayer.gameObject);
-                Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
-                FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
-            }
-
-            //playerControls.Add(thePlayer.GetComponent<PlayerControllByOlteanu>());
-            
-        }
-
         var currentPlayer = FindObjectOfType<PlayerControllByOlteanu>();
         if (currentPlayer != null)
         {
             isGrounded = currentPlayer.isGrounded;
         }
 
-        if (Input.GetKeyDown(KeyCode.K) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.L) && isGrounded)
         {
             newSpawnPoint = FindObjectOfType<PlayerControllByOlteanu>().transform;
             animSeringe.SetBool("isIn", false);
             StartCoroutine(SetSeringeNewSapwnPointCo());
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            InstantKill();
+        }
+
+        if (gameIsOver)
+        {
+            if(Input.GetKeyDown(KeyCode.Y))
+            {
+                SceneManager.LoadScene("Olteanu Scene");
+                
+            }
+
+            if(Input.GetKeyDown(KeyCode.N))
+            {
+                Application.Quit();
+            }
+        }
+
+        if (youWin)
+        {
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                SceneManager.LoadScene("Olteanu Scene");
+
+            }
+
+            if (Input.GetKeyDown(KeyCode.N))
+            {
+                Application.Quit();
+            }
+        }
+
+        if (deathLimit <= 0)
+        {
+            GameOver();
+        }
+
+        
     }
 
     IEnumerator StartSeringeCo()
@@ -109,7 +136,7 @@ public class LevelManagerByOlteanu : MonoBehaviour
 
     IEnumerator SetSeringeNewSapwnPointCo()
     {
-        Vector2 adjustSeringePos = new Vector2(newSpawnPoint.position.x - 1f, newSpawnPoint.position.y + 1.2f);
+        Vector2 adjustSeringePos = new Vector2(newSpawnPoint.position.x - 1f, newSpawnPoint.position.y + 1.8f);
         yield return new WaitForSeconds(2f);
         animSeringe.gameObject.transform.position = adjustSeringePos;
         yield return new WaitForSeconds (1f);
@@ -124,19 +151,30 @@ public class LevelManagerByOlteanu : MonoBehaviour
             var existingPlayer = FindObjectOfType<PlayerControllByOlteanu>();
             if (existingPlayer == null)
             {
+                
                 Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
-                FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
+                StartCoroutine(KillPlayerCameraDellayCo());
             }
             else if (existingPlayer != null)
             {
                 Destroy(existingPlayer.gameObject);
                 Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
-                FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
+                StartCoroutine(KillPlayerCameraDellayCo());
             }
             spawnPlayer = false;
         }
     }
 
+
+    IEnumerator KillPlayerCameraDellayCo()
+    {
+        var existingPlayer = FindObjectOfType<PlayerControllByOlteanu>();
+        existingPlayer.canMove = false;
+        yield return new WaitForSeconds(1);
+        existingPlayer.canMove = true;
+        FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
+
+    }
     public void ResetPlayer()
     {
         thePlayerNumber = Random.Range(0, players.Length);
@@ -152,6 +190,7 @@ public class LevelManagerByOlteanu : MonoBehaviour
 
     public void AddDeadPlayer()
     {
+        AudioManager.instance.PlaySfx(1);
         var existingPlayer = FindObjectOfType<PlayerControllByOlteanu>();
         float minValue = Random.Range(.6f, 1f);
         float maxValue = minValue + Random.Range(0, .2f);
@@ -165,4 +204,44 @@ public class LevelManagerByOlteanu : MonoBehaviour
     {
         theDeadPlayer.GetComponentInChildren<SpriteRenderer>().color = theSpriteColor.color;        
     }
+
+    public void SetNewSpawnPoint()
+    {
+        if (isGrounded)
+        {
+            newSpawnPoint = FindObjectOfType<PlayerControllByOlteanu>().transform;
+            animSeringe.SetBool("isIn", false);
+            StartCoroutine(SetSeringeNewSapwnPointCo());
+        }
+    }
+
+    public void GameOver()
+    {
+        gameIsOver = true;
+        gameOver.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void YouWonTheGame()
+    {
+        youWin = true;
+        youWinPanel.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void InstantKill()
+    {
+       
+        if (!nearSpawnPoint)
+        {            
+            ResetPlayer();
+            spawnPlayer = true;
+            AddDeadPlayer();
+            AddDeadPlayerColour();
+            KillPlayer();
+            nearSpawnPoint = true;
+        }
+    }
+
+    
 }

@@ -11,6 +11,7 @@ public class PlayerDeath : MonoBehaviour
     {
         
         theSprite = GetComponentInChildren<SpriteRenderer>();
+        
     }
     
 }
