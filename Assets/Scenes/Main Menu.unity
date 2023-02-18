@@ -1478,9 +1478,9 @@ MonoBehaviour:
 
     Olteanu
 
-    Boggy
+    DreamNxtGen
 
-    
+
 
 '
 --- !u!222 &1538947174
@@ -2226,7 +2226,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Artists:\r\nBoggy\r\nOlteanu\r\n\n\r"
+  m_Text: "Artists:\r\nDreamNxtGen\nOlteanu\r\n\n\r"
 --- !u!222 &1973497014
 CanvasRenderer:
   m_ObjectHideFlags: 0
