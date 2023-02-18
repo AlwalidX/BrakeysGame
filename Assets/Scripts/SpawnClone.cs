@@ -9,10 +9,12 @@ public class SpawnClone : MonoBehaviour
 
     void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.X))
         {
             SpawnObject();
         }
+        */
     }
 
     void SpawnObject()

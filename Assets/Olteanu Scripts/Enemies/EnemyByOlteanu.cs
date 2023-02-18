@@ -32,7 +32,7 @@ public class EnemyByOlteanu : MonoBehaviour
 
     private void Update()
     {
-        if (Mathf.Abs(transform.position.x - patroPoints[currentPoint].position.x) > .1f)
+        if (Mathf.Abs(transform.position.x - patroPoints[currentPoint].position.x) > .15f)
         {
             if (transform.position.x < patroPoints[currentPoint].position.x)
             {
@@ -45,7 +45,7 @@ public class EnemyByOlteanu : MonoBehaviour
                 transform.localScale = new Vector3(1, 1, 1);
             }
 
-            if (transform.position.y < patroPoints[currentPoint].position.y - .1f && rb.velocity.y < 0.1f)
+            if (transform.position.y < patroPoints[currentPoint].position.y - .1f && rb.velocity.y < 0.15f)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                 // anim.SetTrigger("jump");
@@ -85,6 +85,7 @@ public class EnemyByOlteanu : MonoBehaviour
            
             if (isOn)
             {
+                AudioManager.instance.PlaySfx(2);
                 Instantiate(theDeathEffect, collision.transform.position, collision.transform.rotation);
                 collision.gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
                 Destroy(collision.gameObject, 2.2f);
@@ -94,6 +95,9 @@ public class EnemyByOlteanu : MonoBehaviour
                 StartCoroutine(ResetEnemyCo());
             }
             GetComponentInChildren<SpriteRenderer>().enabled = false;
+            GetComponent<Collider2D>().enabled = false;
+            GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             Destroy(gameObject, 5f);
         }
         
