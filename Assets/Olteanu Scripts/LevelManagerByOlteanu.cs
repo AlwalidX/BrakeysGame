@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class LevelManagerByOlteanu : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class LevelManagerByOlteanu : MonoBehaviour
     public int thePlayerNumber;
     public SpriteRenderer theSpriteColor;
     private GameObject theDeadPlayer;
+    public int deathLimit = 20;
+    public TextMeshProUGUI limitText;
 
     private void Start()
     {
@@ -45,6 +48,12 @@ public class LevelManagerByOlteanu : MonoBehaviour
 
     private void Update()
     {
+        if (deathLimit == 0)
+        {
+          Debug.Log("IT IS 0");
+        }
+        limitText.SetText(deathLimit.ToString()); 
+
         if(gameStartsCounter > 0)
         {
             gameStartsCounter -= Time.deltaTime;
@@ -135,7 +144,7 @@ public class LevelManagerByOlteanu : MonoBehaviour
    
     public void AddPlayer()
     {
-        
+          
         Instantiate(players[thePlayerNumber], spawnPoint.position, spawnPoint.rotation);
         FindObjectOfType<CameraController>().thePlayer = FindObjectOfType<PlayerControllByOlteanu>().transform;
     }
@@ -148,6 +157,8 @@ public class LevelManagerByOlteanu : MonoBehaviour
         float maxValue = minValue + Random.Range(0, .2f);
         theDeadPlayer = Instantiate(deadPlayer, existingPlayer.transform.position, existingPlayer.transform.rotation);
         theDeadPlayer.gameObject.transform.localScale = new Vector2(minValue, maxValue);
+        deathLimit = deathLimit - 1;
+        
     }
 
     public void AddDeadPlayerColour()

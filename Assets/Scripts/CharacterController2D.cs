@@ -8,7 +8,6 @@ public class CharacterController2D : MonoBehaviour
     public float speed = 10.0f;
     public float speedUp = 15.0f;
     public float jumpForce = 10.0f;
-    public bool isGrounded = false;
     public Rigidbody2D rigidBody2D;
     public GameObject checkPoint;
     public float horizontalInput;
@@ -18,6 +17,9 @@ public class CharacterController2D : MonoBehaviour
     public bool canSpeed = true;
     public SpriteRenderer spriteRenderer;
     public float flyingForce = 5f;
+    public LayerMask ground;
+    public Vector3 boxSize;
+    public float maxDistance;
 
     void Start()
     {
@@ -27,6 +29,7 @@ public class CharacterController2D : MonoBehaviour
 
     void Update()
     {
+
 
         if (canSpeed)
         {
@@ -50,7 +53,7 @@ public class CharacterController2D : MonoBehaviour
 
         if(canJump)
         {
-               if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+               if (Input.GetKeyDown(KeyCode.Space) && isGrounded())
         {
             rigidBody2D.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
@@ -77,20 +80,21 @@ public class CharacterController2D : MonoBehaviour
         }
     }
 
-
-    public void OnCollisionEnter2D(Collision2D collision)
+     void OnDrawGizmos() 
     {
-        if (collision.collider.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
+     Gizmos.color =Color.red;
+     Gizmos.DrawCube(transform.position-transform.up*maxDistance, boxSize);   
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+     bool isGrounded()
     {
-        if (collision.collider.CompareTag("Ground"))
-        {
-            isGrounded = false;
-        }
+      if(Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, maxDistance, ground))
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
     }
  }
